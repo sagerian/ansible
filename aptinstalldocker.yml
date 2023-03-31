@@ -1,0 +1,10 @@
+- hosts: "*"
+  become: yes
+  tasks:
+    # - name: apt
+    #   apt:
+    #     update_cache: yes
+    #     upgrade: 'yes'
+
+    - name: install docker
+      ansible.builtin.command: curl -fsSL https://get.docker.com | sh

@@ -1,0 +1,10 @@
+#ansible-playbook /Users/matthewbeaver/Documents/ansible/playbooks/zsh.yml --user root --ask-pass --ask-become-pass -i /Users/matthewbeaver/Documents/ansible/inventory/hosts
+- name: install latest zsh on all hosts
+  hosts: "*"
+  tasks:
+    - name: install zsh
+      apt:
+        name: zsh
+        state: present
+        update_cache: true
+      become: true

@@ -1,0 +1,7 @@
+#ansible-playbook /Users/matthewbeaver/Documents/ansible/playbooks/settime.yml --user root --ask-pass --ask-become-pass -i /Users/matthewbeaver/Documents/ansible/inventory/hosts
+- name: Set timezone to Australia/Perth
+  hosts: "*"
+  tasks:
+    - name: set timezone
+      timezone:
+        name: Australia/Perth

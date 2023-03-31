@@ -1,0 +1,52 @@
+---
+- hosts: all
+  become: true
+  vars:
+    # container_count: 4
+    # default_container_name: docker
+    # default_container_image: raspbian
+    # default_container_command: sleep 1
+    # pip_package: python3-pip
+    # pip_executable: "{{ 'pip3' if pip_package.startswith('python3') else 'pip' }}"
+    # pip_install_packages: []
+
+  tasks:
+    # - name: Ensure Pip is installed.
+    #   package:
+    #     name: "{{ pip_package }}"
+    #     state: present
+
+    # - name: Ensure pip_install_packages are installed.
+    #   pip:
+    #     name: "{{ item.name | default(item) }}"
+    #     version: "{{ item.version | default(omit) }}"
+    #     virtualenv: "{{ item.virtualenv | default(omit) }}"
+    #     state: "{{ item.state | default(omit) }}"
+    #     extra_args: "{{ item.extra_args | default(omit) }}"
+    #     executable: "{{ pip_executable }}"
+    #   loop: "{{ pip_install_packages }}"
+
+    - name: install docker with pip
+      pip:
+        name: docker
+
+    - name: deploy nginx docker container
+      docker_container:
+        image: nginx:stable
+        name: nginx
+        state: started
+        auto_remove: true
+        ports:
+          - "8080:80"
+
+    # - name: Create a hw container
+      # docker_container:
+      #   name: mydata
+      #   image: busybox
+      #   volumes:
+      #   - /data
+
+
+
+
+# ansible-playbook /Users/matthewbeaver/Documents/ansible/playbooks/createcontainer.yml --user pi --ask-pass --ask-become-pass -i /Users/matthewbeaver/Documents/ansible/inventory/rpis

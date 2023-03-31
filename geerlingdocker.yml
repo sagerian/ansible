@@ -1,0 +1,51 @@
+---
+
+- name: install docker
+  hosts: "*"
+  become: true
+  vars:
+    # Check available versions on a Pi: `apt-cache madison docker-ce`
+    docker_version: "latest"
+    # Whether to install recommended packages alongside docker-ce.
+    docker_install_recommends: false
+    # Whether to install Docker Compose via Pip.
+    docker_install_compose: true
+    # A list of users who will be added to the docker group.
+    docker_users: [pi]
+    # The executable to use for Pip.
+    docker_pip_executable: pip3
+
+  tasks:
+    - name: Check if Docker is already present.
+      command: which docker
+      failed_when: false
+      changed_when: false
+      check_mode: false
+      register: docker_command_result
+
+    - name: Download Docker install convenience script.
+      get_url:
+        url: https://get.docker.com/
+        dest: /tmp/get-docker.sh
+        mode: 0775
+      when: docker_command_result.rc == 1
+
+    - name: Run Docker install convenience script.
+      command: /tmp/get-docker.sh
+      environment:
+        CHANNEL: stable
+      when: docker_command_result.rc == 1
+
+    - name: Make sure Docker CE is the version specified.
+      apt:
+        name: "docker-ce={{ docker_version }}"
+        state: present
+        force: true
+        install_recommends: "{{ docker_install_recommends }}"
+      when: docker_version != 'latest'
+
+    - name: Ensure Docker is started.
+      service:
+        name: docker
+        state: started
+        enabled: true

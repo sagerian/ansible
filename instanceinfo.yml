@@ -1,0 +1,5 @@
+- hosts: "*"
+  remote_user: root
+  tasks:
+    - name: Gather info about existing instances
+      linode.cloud.instance_info:

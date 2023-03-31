@@ -1,0 +1,10 @@
+- hosts: "*"
+  remote_user: root
+  vars:
+    NORMAL_USER_NAME: 'jdoe'
+  tasks:
+    - name: "Create a secondary, non-root user"
+      user:
+        name: "{{NORMAL_USER_NAME}}"
+        password: 'j&yK&rqfDoxw5Jc5WCSEtrSYZM*6y2asD9yux@bNtRbJUN9zCWXZM'
+        shell: /bin/bash
