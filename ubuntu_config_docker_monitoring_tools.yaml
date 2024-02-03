@@ -1,0 +1,34 @@
+- hosts: linodes
+  become: yes
+  tasks:
+  - name: Install Docker
+    apt:
+      name: docker.io
+      state: latest
+      update_cache: yes
+
+  - name: Install Docker Compose
+    apt:
+      name: docker-compose
+      state: latest
+
+  - name: Download Uptime Kuma Docker Compose file
+    get_url:
+      url: https://raw.githubusercontent.com/louislam/uptime-kuma/1.23.X/docker/docker-compose.yml
+      dest: "/root/docker-compose.yml"
+
+  - name: Run Uptime Kuma
+    docker_compose:
+      project_src: /root
+      files:
+        - docker-compose.yml
+      state: present
+      pull: yes 
+
+  - name: Run Uptime Kuma
+    docker_compose:
+      project_src: /root
+      files:
+        - docker-compose.yml
+      state: present
+      pull: yes
